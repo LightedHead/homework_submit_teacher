@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<!--[if lte IE 8]> <html class="oldie" lang="en"> <![endif]-->
+<!--[if IE 9]> <html class="ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="format-detection" content="telephone=no">
+
+	 {% if title %}
+        <title>{{ title }} - 博客</title>
+        {% else %}
+        <title>欢迎来到博客!</title>
+        {% endif %}
+
+    <link rel="stylesheet" href="{{url_for('static', filename='js/fancybox/jquery.fancybox.css')}}"  type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{url_for('static', filename='css/all.css')}}" />
+	<link rel="stylesheet" href="{{url_for('static', filename='css/screen.css')}}" />
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+
+    </head>
+    <body>
+
+    <div id="wrapper">
+		<div class="wrapper-holder">
+			<header id="header">
+				<a class="menu_trigger" href="#">menu</a>
+					<nav id="nav">
+						<ul>
+							<li><a href="{{ url_for('index') }}">首页</a></li>
+                            <li><a class="active" href="{{ url_for('submit') }}">提交状况</a></li>
+                            <li><a href="{{ url_for('logout') }}">退出</a></li><br><br>
+						</ul>
+					</nav>
+
+                <table class="table table-hover">
+                    <tr>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>提交时间</th>
+                        <th>操</th>
+                        <th>作</th>
+                    </tr>
+
+                    {% for i in submits %}
+                    <tr>
+                        <td> {{i.id}} </td>
+                        <td> {{i.name}} </td>
+                        <td> {{i.timestamp}} </td>
+                        <td><a href="{{ url_for('download', filename=i.filename) }}" class="btn btn-primary">下载</a></td>
+                    </tr>
+
+                    {% endfor %}
+                </table>
+
+			</header>
+        </div>
+            <div class="wrapper-holder green">
+			<section id="main">
+                {% block main %}
+
+                {% endblock %}
+			</section>
+		</div>
+
+		<footer id="footer">
+
+		</footer>
+	</div>
+
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="{{url_for('static', filename='js/isotope.pkgd.min.js')}}" ></script>
+	<script src="{{url_for('static', filename='js/cells-by-row.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/fancybox/jquery.fancybox.pack.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/main.js')}}"></script>
+
+        <hr>
+       {% with messages = get_flashed_messages() %}
+           {% if messages %}
+            <ur>
+                {% for message in messages %}
+                    <li>{{ message }}</li>>
+                {% endfor %}
+            </ur>
+           {% endif %}
+       {% endwith %}
+
+        {% block content %}
+
+        {% endblock %}
+    </body>
+</html>
+
+

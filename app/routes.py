@@ -88,11 +88,12 @@ def submit():
 
     return render_template('submited_work.html', submits=submits)
 
-#
-#下载功能（未实现）
-@app.route('/download', methods=['GET', 'POST'])
+
+#下载功能
+@app.route('/download/<filename>', methods=['GET', 'POST'])
 @login_required
 def download(filename):
+    dl = download
     if request.method == "GET":
         if os.path.isfile(os.path.join('upload', filename)):
             return send_from_directory('upload', filename, as_attachment=True)

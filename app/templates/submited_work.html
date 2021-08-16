@@ -40,15 +40,16 @@
                         <th>学号</th>
                         <th>姓名</th>
                         <th>提交时间</th>
-                        <th>操</th>
-                        <th>作</th>
+                        <th>文件名</th>
+                        <th>操作</th>
                     </tr>
 
                     {% for i in submits %}
                     <tr>
                         <td> {{i.id}} </td>
-                        <td> {{i.name}} </td>
+                        <td> {{i.student_name}} </td>
                         <td> {{i.timestamp}} </td>
+                        <td> {{i.filename}} </td>
                         <td><a href="{{ url_for('download', filename=i.filename) }}" class="btn btn-primary">下载</a></td>
                     </tr>
 

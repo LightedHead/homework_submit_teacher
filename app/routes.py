@@ -1,7 +1,7 @@
 #从app模块中即从__init__.py中导入创建的app应用
 import os
 
-from flask import render_template, flash, redirect, url_for,request
+from flask import render_template, flash, redirect, url_for, request, make_response
 from app import app
 #导入表单处理方法
 from forms import LoginForm
@@ -93,11 +93,16 @@ def submit():
 @app.route('/download/<filename>', methods=['GET', 'POST'])
 @login_required
 def download(filename):
-    dl = download
-    if request.method == "GET":
-        if os.path.isfile(os.path.join('upload', filename)):
-            return send_from_directory('upload', filename, as_attachment=True)
-        abort(404)
+    directory = os.getcwd()#文件目录
+    if os.path.isfile(os.path.join(directory, filename)):
+        response = make_response(
+            send_from_directory(directory, filename.encode('utf-8').decode('utf-8'), as_attachment=True))
+
+        #将utf8编码的中文文件名默认转为latin-1编码
+        #避免中文文件名报错
+        response.headers["Content-Disposition"] = "attachment; filename={}".format(filename.encode().decode('latin-1'))
+        return response
+
 
     submits = Submit.query.all()
     return render_template('submited_work.html', submits=submits)
